@@ -270,6 +270,18 @@ bot.on('text', (ctx) => {
     }
   );
 });
+// =====  WEB-сервер =====
+const express = require('express');
+const webApp = express();
+const PORT = process.env.PORT || 3000;
+
+webApp.get('/', (req, res) => {
+  res.send('Бот работает!');
+});
+
+webApp.listen(PORT, () => {
+  console.log(`✅ Веб-сервер запущен на порту ${PORT}`);
+});
 
 // ===== ЗАПУСК =====
 bot.launch()
