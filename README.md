@@ -9,7 +9,7 @@ Telegram-бот с искусственным интеллектом (Yandex GPT
 
 ## <img src="images/link.svg" width="24"> Живой пример
 
-_Скоро здесь будет ссылка на работающего бота_
+[Перейти к боту](https://t.me/XvolkX_admin_bot)
 
 ## <img src="images/features.svg" width="24"> Функции
 
