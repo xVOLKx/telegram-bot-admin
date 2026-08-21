@@ -11,6 +11,7 @@ const ADMIN_ID = 6186556006; // ⚠️ ЗАМЕНИ НА СВОЙ ID
 bot.telegram.setMyCommands([
   { command: 'start', description: '👋 Главное меню' },
   { command: 'order', description: '📝 Оставить заявку' },
+   { command: 'admin', description: '🛠 Админ-панель' },
   { command: 'list', description: '📋 Список заявок (админ)' },
   { command: 'stats', description: '📊 Статистика (админ)' },
 ]);
