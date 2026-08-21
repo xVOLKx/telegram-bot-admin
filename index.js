@@ -10,6 +10,7 @@ const ADMIN_ID = 6186556006; // ⚠️ ЗАМЕНИ НА СВОЙ ID
 // ===== УСТАНАВЛИВАЕМ НИЖНЕЕ МЕНЮ =====
 bot.telegram.setMyCommands([
   { command: 'start', description: '👋 Главное меню' },
+  { command: 'help', description: '📌 Помощь' },
   { command: 'list', description: '📋 Список заявок (админ)' },
   { command: 'stats', description: '📊 Статистика (админ)' },
   { command: 'broadcast', description: '📨 Рассылка (админ)' },
@@ -56,6 +57,19 @@ bot.start((ctx) => {
     '✅ Отвечать на вопросы (с помощью ИИ)\n' +
     '✅ Уведомлять администратора о новых заявках\n\n' +
     '⬇️ *Используйте кнопки внизу экрана для управления.*',
+    { parse_mode: 'Markdown' }
+  );
+});
+
+// ===== КОМАНДА /help =====
+bot.command('help', (ctx) => {
+  ctx.reply(
+    '📌 *Доступные команды:*\n\n' +
+    '/start — главное меню\n' +
+    '/order — оставить заявку\n' +
+    '/list — список заявок (админ)\n' +
+    '/stats — статистика (админ)\n' +
+    '/broadcast — рассылка (админ)',
     { parse_mode: 'Markdown' }
   );
 });
@@ -113,16 +127,15 @@ bot.command('list', (ctx) => {
     parse_mode: 'Markdown',
     ...Markup.inlineKeyboard(buttons)
   });
-});
-
-bot.action(/view_(\d+)/, (ctx) => {
+});bot.action(/view_(\d+)/, (ctx) => {
   if (ctx.from.id !== ADMIN_ID) return ctx.reply('⛔️ Нет доступа.');
   const order = orders.find(o => o.id === parseInt(ctx.match[1]));
   if (!order) return ctx.reply('❌ Заявка не найдена.');
   ctx.reply(
     `📩 **Заявка #${order.id}**\n👤 @${order.username}\n🆔 ${order.userId}\n📅 ${order.time}\n\n📝 ${order.text}`
   );
-  ctx.answerCbQuery();});
+  ctx.answerCbQuery();
+});
 
 // ===== СТАТИСТИКА =====
 bot.command('stats', (ctx) => {
@@ -159,11 +172,11 @@ bot.command('broadcast', async (ctx) => {
 // ===== ПОДСКАЗКА =====
 bot.on('text', (ctx) => {
   ctx.reply(
-    '🤔 Я понимаю только команды.\n\n📌 /order — заявка\n📌 /start — главное меню',
+    '🤔 Я понимаю только команды.\n\n📌 /help — список команд\n📌 /order — заявка\n📌 /start — главное меню',
     {
       ...Markup.inlineKeyboard([
         [Markup.button.callback('📝 Заявка', 'order')],
-        [Markup.button.callback('❓ Помощь', 'help')],
+        [Markup.button.callback('📌 Помощь', 'help')],
       ])
     }
   );
@@ -175,7 +188,7 @@ bot.action('order', (ctx) => {
 });
 
 bot.action('help', (ctx) => {
-  ctx.reply('📌 Команды: /start, /order, /list (админ), /stats (админ)');
+  ctx.reply('📌 Команды: /start, /order, /list (админ), /stats (админ), /broadcast (админ)');
   ctx.answerCbQuery();
 });
 
