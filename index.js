@@ -10,10 +10,9 @@ const ADMIN_ID = 6186556006; // ⚠️ ЗАМЕНИ НА СВОЙ ID
 // ===== УСТАНАВЛИВАЕМ НИЖНЕЕ МЕНЮ =====
 bot.telegram.setMyCommands([
   { command: 'start', description: '👋 Главное меню' },
-  { command: 'order', description: '📝 Оставить заявку' },
-   { command: 'admin', description: '🛠 Админ-панель' },
   { command: 'list', description: '📋 Список заявок (админ)' },
   { command: 'stats', description: '📊 Статистика (админ)' },
+  { command: 'broadcast', description: '📨 Рассылка (админ)' },
 ]);
 
 // ===== ХРАНИЛИЩЕ ЗАЯВОК =====
@@ -123,8 +122,7 @@ bot.action(/view_(\d+)/, (ctx) => {
   ctx.reply(
     `📩 **Заявка #${order.id}**\n👤 @${order.username}\n🆔 ${order.userId}\n📅 ${order.time}\n\n📝 ${order.text}`
   );
-  ctx.answerCbQuery();
-});
+  ctx.answerCbQuery();});
 
 // ===== СТАТИСТИКА =====
 bot.command('stats', (ctx) => {
@@ -133,6 +131,29 @@ bot.command('stats', (ctx) => {
     `📊 *Статистика*\n\n📩 Заявок: ${stats.orders}\n👥 Пользователей: ${stats.users.size}`,
     { parse_mode: 'Markdown' }
   );
+});
+
+// ===== РАССЫЛКА =====
+bot.command('broadcast', async (ctx) => {
+  if (ctx.from.id !== ADMIN_ID) return;
+
+  const text = ctx.message.text.replace('/broadcast', '').trim();
+  if (!text) return ctx.reply('📝 Напишите текст рассылки после команды: /broadcast Привет!');
+
+  ctx.reply(`📤 Начинаю рассылку для ${stats.users.size} пользователей...`);
+
+  let success = 0;
+  let fail = 0;
+  for (const userId of stats.users) {
+    try {
+      await bot.telegram.sendMessage(userId, text);
+      success++;
+    } catch {
+      fail++;
+    }
+  }
+
+  ctx.reply(`✅ Рассылка завершена.\n📨 Отправлено: ${success}\n❌ Не доставлено: ${fail}`);
 });
 
 // ===== ПОДСКАЗКА =====
