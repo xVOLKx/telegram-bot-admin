@@ -5,7 +5,7 @@ const express = require('express');
 
 // ===== КОНФИГУРАЦИЯ =====
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const ADMIN_ID = 6186556006; // ⚠️ ЗАМЕНИ НА СВОЙ ID
+const ADMIN_ID = process.env.ADMIN_ID;
 
 // ===== УСТАНАВЛИВАЕМ НИЖНЕЕ МЕНЮ =====
 bot.telegram.setMyCommands([
@@ -199,6 +199,12 @@ webApp.get('/', (req, res) => res.send('Бот работает!'));
 webApp.listen(PORT, () => console.log(`✅ Веб-сервер на порту ${PORT}`));
 
 // ===== ЗАПУСК =====
-bot.launch()
-  .then(() => console.log('✅ Бот запущен!'))
-  .catch(err => console.error('❌ Ошибка:', err));
+async function start() {
+  try {
+    bot.launch();
+    console.log('✅ Telegram Bot Admin запущен!');
+  } catch (err) {
+    console.error('❌ Ошибка запуска:', err);
+  }
+}
+start();
