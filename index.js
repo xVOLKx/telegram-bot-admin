@@ -5,7 +5,7 @@ const express = require('express');
 
 // ===== КОНФИГУРАЦИЯ =====
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const ADMIN_ID = process.env.ADMIN_ID;
+const ADMIN_ID = Number(process.env.ADMIN_ID);
 
 // ===== УСТАНАВЛИВАЕМ НИЖНЕЕ МЕНЮ =====
 bot.telegram.setMyCommands([
